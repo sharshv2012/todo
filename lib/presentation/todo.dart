@@ -10,7 +10,7 @@ class TodoMainPage extends StatefulWidget {
 }
 
 class _TodoMainPageState extends State<TodoMainPage> {
-  final List<TodoModel> todos = TodoRepo().todos;
+  final List<TodoModel> todos = TodoRepo.todos;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,12 +30,13 @@ class _TodoMainPageState extends State<TodoMainPage> {
                     return AlertDialog(
                       title: const Text('Add Todo'),
                       content: TextField(
-                        controller: TodoRepo().controller,
                         decoration: const InputDecoration(
                           hintText: 'Enter your todo',
                         ),
                         onChanged: (value) {
-                          TodoRepo().controller.text = value;
+                          setState(() {
+                            TodoRepo.todo = value;
+                          });
                         },
                       ),
                       actions: [
@@ -47,7 +48,7 @@ class _TodoMainPageState extends State<TodoMainPage> {
                         ),
                         TextButton(
                           onPressed: () {
-                            if (TodoRepo().controller.text.isEmpty){
+                            if (TodoRepo.todo.isEmpty || TodoRepo.todo == '') {
                               showDialog(context: context, builder: 
                               (context) {
                                 return AlertDialog(
@@ -66,7 +67,7 @@ class _TodoMainPageState extends State<TodoMainPage> {
                               return;
                             }
                             setState(() {
-                              todos.add(TodoModel(title: controller.text));
+                              todos.add(TodoModel(title: TodoRepo.todo));
                             });
                             Navigator.pop(context);
                           },
