@@ -11,4 +11,9 @@ class TodoRepo {
   ];
 
   static String todo = '';
+
+  static void editTodo(String title, int index) {
+    todos[index].title = title;
+    todos[index].isDone = false;
+  }
 }

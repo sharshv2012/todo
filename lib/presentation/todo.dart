@@ -82,7 +82,7 @@ class _TodoMainPageState extends State<TodoMainPage> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              for (final todo in todos)
+              for (final todo in todos) 
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
@@ -123,6 +123,61 @@ class _TodoMainPageState extends State<TodoMainPage> {
                               });
                             },
                             icon: const Icon(Icons.delete)),
+
+                        IconButton(onPressed: (){
+                          showDialog(context: context, builder: 
+                          (context) {
+                            return AlertDialog(
+                              title: const Text('Edit Todo'),
+                              content: TextField(
+                                decoration: const InputDecoration(
+                                  hintText: 'Enter your todo',
+                                ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    TodoRepo.todo = value;
+                                  });
+                                },
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    if (TodoRepo.todo.isEmpty || TodoRepo.todo == '') {
+                                      showDialog(context: context, builder: 
+                                      (context) {
+                                        return AlertDialog(
+                                          title: const Text('Todo cannot be empty'),
+                                          content: const Text('Please enter a valid todo'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text('OK'),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                      return;
+                                    }
+                                    setState(() {
+                                      TodoRepo.editTodo(TodoRepo.todo, todos.indexOf(todo));
+                                      TodoRepo.todo = '';
+                                    });
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('Edit'),
+                                ),
+                              ],
+                            );
+                          });
+                        }, icon: const Icon(Icons.edit)),
                       ],
                     ),
                   ),
