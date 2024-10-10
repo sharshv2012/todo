@@ -25,8 +25,6 @@ class _TodoMainPageState extends State<TodoMainPage> {
               showDialog(
                   context: context,
                   builder: (context) {
-                    final TextEditingController controller =
-                        TextEditingController();
                     return AlertDialog(
                       title: const Text('Add Todo'),
                       content: TextField(
@@ -68,6 +66,7 @@ class _TodoMainPageState extends State<TodoMainPage> {
                             }
                             setState(() {
                               todos.add(TodoModel(title: TodoRepo.todo));
+                              TodoRepo.todo = '';
                             });
                             Navigator.pop(context);
                           },
